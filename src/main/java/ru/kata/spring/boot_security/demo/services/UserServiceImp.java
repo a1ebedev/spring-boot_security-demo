@@ -11,7 +11,6 @@ import java.util.List;
 
 
 @Service
-@Transactional
 public class UserServiceImp implements UserService {
 
     private final UserRepository userRepository;
@@ -23,28 +22,29 @@ public class UserServiceImp implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public List<User> getAllUsers() {
 
         return userRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public User findUserById(int id) {
 
         return userRepository.findById(id).orElse(null);
     }
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public User findUserByEmail(String email) {
 
         return userRepository.findByEmail(email).orElse(null);
     }
 
     @Override
+    @Transactional
     public void addUser(User user) {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -53,6 +53,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    @Transactional
     public void updateUser(int id, User updatedUser) {
 
         updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
@@ -62,6 +63,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(int id) {
 
         userRepository.deleteById(id);

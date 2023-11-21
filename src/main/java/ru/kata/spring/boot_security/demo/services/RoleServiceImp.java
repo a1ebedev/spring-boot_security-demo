@@ -9,7 +9,6 @@ import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 public class RoleServiceImp implements RoleService {
 
     private final RoleRepository roleRepository;
@@ -20,11 +19,13 @@ public class RoleServiceImp implements RoleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Role> getAllRoles() {
         return roleRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Role findRole(int id) {
         return roleRepository.findById(id).orElse(null);
     }
