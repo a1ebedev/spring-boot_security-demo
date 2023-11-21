@@ -4,8 +4,11 @@
     <title>Spring Security Example</title>
 </head>
 <body>
-<h1>Welcome to Index PAGE!</h1>
+    <div th:insert="~{fragment :: header}"></div>
+    <h1>Welcome to Index PAGE!</h1>
 
+    <a href="/user">User details</a><br>
+    <a href="/admin">Admin panel</a>
 
 </body>
 </html>
