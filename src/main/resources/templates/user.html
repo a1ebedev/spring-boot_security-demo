@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{css/dashboard.css}">
+
+    <title>User page</title>
+</head>
+<body>
+<!-- Верхнаяя навигационная панель -->
+<header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow text-white" data-bs-theme="dark">
+    <div class="navbar-text d-inline-flex text-white" style="font-size: large">
+        <strong class="mb-0 me-2 ms-3" th:text="${authUser.getEmail()}"></strong>
+        <span class="me-1" style="font-size: large">with roles:</span>
+        <span th:each="role : ${#authentication.authorities}">
+            <span class="me-1" th:text="${role.getAuthority().replace('ROLE_',' ')}">
+            </span>
+        </span>
+    </div>
+    <form th:method="POST" th:action="@{/logout}" class="d-flex">
+        <button class="btn navbar-text" type="submit">Logout</button>
+    </form>
+</header>
+
+<div class="container-fluid bg-light">
+    <div class="row ">
+        <!-- Левый сайдбар -->
+        <div class="sidebar col-md-3 col-lg-2 p-0 bg-white full-height">
+            <ul class="nav flex-column nav-pills mt-3">
+                <li sec:authorize="hasRole('ADMIN')" class="nav-item">
+                    <a class="nav-link" href="/admin">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/user">User</a>
+                </li>
+            </ul>
+        </div>
+        <!-- Основной контент -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <h1 class="pt-3 pb-2 mb-3 h1">User information-page</h1>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="h5 mb-0 p-1">About user</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">First name</th>
+                            <th scope="col">Last name</th>
+                            <th scope="col">Age</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+
+                            <td class="pt-3" th:text="${authUser.getId()}">ID</td>
+                            <td class="pt-3" th:text="${authUser.getFirstName()}">First name</td>
+                            <td class="pt-3" th:text="${authUser.getLastName()}">Last name</td>
+                            <td class="pt-3" th:text="${authUser.getAge()}">Age</td>
+                            <td class="pt-3" th:text="${authUser.getEmail()}">Email</td>
+                            <td class="pt-3">
+                                <span th:each="role : ${authUser.getRoles()}">
+                                    <span th:text="${role.getName().replace('ROLE_','')}">role</span>
+                                </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

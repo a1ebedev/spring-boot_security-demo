@@ -1,0 +1,10 @@
+.custom-label {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.full-height {
+    min-height: 100vh;
+}
