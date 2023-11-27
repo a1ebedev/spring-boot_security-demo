@@ -104,7 +104,7 @@
                                                                 aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body col-8 offset-2">
-                                                        <form th:method="POST"
+                                                        <form th:method="PATCH"
                                                               th:action="@{/admin(id=${user.getId()})}"
                                                               th:object="${user}">
                                                             <div class="form-group mt-3">
@@ -195,8 +195,8 @@
                                                         </button>
                                                     </div>
                                                     <div class="modal-body col-8 offset-2">
-                                                        <form action="#" th:method="POST"
-                                                              th:action="@{/admin/remove(id=${user.getId()})}"
+                                                        <form th:method="DELETE"
+                                                              th:action="@{/admin(id=${user.getId()})}"
                                                               th:object="${user}">
 
                                                             <div class="form-group mt-3">

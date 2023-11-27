@@ -26,19 +26,13 @@ public class RoleServiceImp implements RoleService {
 
     @Override
     @Transactional(readOnly = true)
-    public Role findRole(int id) {
-        return roleRepository.findById(id).orElse(null);
+    public Role findByName(String name) {
+        return roleRepository.findByName(name).orElse(null);
     }
 
     @Override
     @Transactional
     public void addRole(Role role) {
         roleRepository.save(role);
-    }
-
-    @Override
-    @Transactional
-    public void deleteRole(int id) {
-        roleRepository.deleteById(id);
     }
 }
