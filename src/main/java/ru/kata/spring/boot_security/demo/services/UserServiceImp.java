@@ -30,12 +30,6 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public User findUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
     }
