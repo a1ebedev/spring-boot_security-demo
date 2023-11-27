@@ -5,13 +5,10 @@ import ru.kata.spring.boot_security.demo.models.Role;
 import java.util.List;
 
 public interface RoleService {
-
     List<Role> getAllRoles();
 
-    Role findRole(int id);
+    Role findByName(String name);
 
     void addRole(Role role);
-
-    void deleteRole(int id);
 
 }

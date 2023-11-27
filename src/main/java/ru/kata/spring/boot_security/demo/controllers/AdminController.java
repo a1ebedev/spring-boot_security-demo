@@ -14,14 +14,14 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    private final UserService userService;
-    private final RoleServiceImp roleService;
 
     @Autowired
-    public AdminController(UserService userService, RoleServiceImp roleServiceImp) {
-        this.userService = userService;
-        this.roleService = roleServiceImp;
-    }
+    private UserService userService;
+
+    @Autowired
+    private RoleServiceImp roleService;
+
+
 
     @GetMapping
     public String listUsers(Principal principal, Model model) {
@@ -44,16 +44,16 @@ public class AdminController {
     }
 
 
-    @PostMapping(value = "/edit")
-    public String update(@RequestParam("id") int id, @ModelAttribute("user") User user) {
+    @PatchMapping
+    public String update(@RequestParam("id") Long id, @ModelAttribute("user") User user) {
 
         userService.updateUser(id, user);
 
         return "redirect:/admin";
     }
 
-    @PostMapping("/remove")
-    public String remove(@RequestParam("id") int id) {
+   @DeleteMapping
+    public String remove(@RequestParam("id") Long id) {
 
         userService.deleteUser(id);
 

@@ -31,10 +31,9 @@ public class DatabaseInitializer implements CommandLineRunner {
         roleService.addRole(new Role("ROLE_USER"));
 
         userService.addUser(new User("admin", "admin", 31, "admin@mail.ru", "123",
-                new HashSet<>(Arrays.asList(roleService.findRole(1), roleService.findRole(2)))));
+                new HashSet<>(Arrays.asList(roleService.findByName("ROLE_ADMIN"), roleService.findByName("ROLE_USER")))));
         userService.addUser(new User("user", "user", 25, "user@mail.ru", "123",
-                Collections.singleton(roleService.findRole(2))));
-
+                new HashSet<>(Collections.singleton(roleService.findByName("ROLE_USER")))));
 
     }
 }
