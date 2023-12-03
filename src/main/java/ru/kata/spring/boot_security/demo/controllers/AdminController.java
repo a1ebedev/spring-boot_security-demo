@@ -1,65 +1,72 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.dto.UserDTO;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleServiceImp;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
-import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
-@Controller
-@RequestMapping("/admin")
+@org.springframework.web.bind.annotation.RestController
+@RequestMapping("/api/admin")
 public class AdminController {
 
     private final UserService userService;
-
     private final RoleServiceImp roleService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public AdminController(UserService userService, RoleServiceImp roleService) {
+    public AdminController(UserService userService, RoleServiceImp roleService, ModelMapper modelMapper) {
         this.userService = userService;
         this.roleService = roleService;
+        this.modelMapper = modelMapper;
     }
 
-    @GetMapping
-    public String listUsers(Principal principal, Model model) {
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDTO>> findAllUsers() {
+        return new ResponseEntity<>(userService.getAllUsers().stream().map(this::convertToUserDTO)
+                .collect(Collectors.toList()), HttpStatus.OK);
+    }
 
-        model.addAttribute("authUser", userService.findUserByEmail(principal.getName()));
-        model.addAttribute("user", new User());
-        model.addAttribute("roles", roleService.getAllRoles());
-        model.addAttribute("users", userService.getAllUsers());
-
-        return "admin";
+    @GetMapping("/users/{id}")
+    public ResponseEntity<UserDTO> findUser(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(convertToUserDTO(userService.findUserById(id)), HttpStatus.OK);
     }
 
 
-    @PostMapping
-    public String create(@ModelAttribute("user") User user) {
+    @GetMapping("/roles")
+    public ResponseEntity<List<Role>> getAllRoles() {
+        return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
+    }
 
+    @PostMapping("/users")
+    public ResponseEntity<UserDTO> create(@RequestBody User user) {
         userService.addUser(user);
-
-        return "redirect:/admin";
+        return new ResponseEntity<>(convertToUserDTO(user), HttpStatus.CREATED);
     }
 
-
-    @PatchMapping
-    public String update(@RequestParam("id") Long id, @ModelAttribute("user") User user) {
-
+    @PutMapping("/users/{id}")
+    public ResponseEntity<HttpStatus> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
         userService.updateUser(id, user);
-
-        return "redirect:/admin";
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-   @DeleteMapping
-    public String remove(@RequestParam("id") Long id) {
-
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 
-        return "redirect:/admin";
+    private UserDTO convertToUserDTO(User user) {
+        return modelMapper.map(user, UserDTO.class);
     }
 
 }

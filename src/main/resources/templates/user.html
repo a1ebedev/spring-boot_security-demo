@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{css/dashboard.css}">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
 
     <title>User page</title>
 </head>
@@ -13,14 +13,12 @@
 <!-- Верхнаяя навигационная панель -->
 <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow text-white" data-bs-theme="dark">
     <div class="navbar-text d-inline-flex text-white" style="font-size: large">
-        <strong class="mb-0 me-2 ms-3" th:text="${authUser.getEmail()}"></strong>
+        <strong class="mb-0 me-2 ms-3" id="nav-username"></strong>
         <span class="me-1" style="font-size: large">with roles:</span>
-        <span th:each="role : ${#authentication.authorities}">
-            <span class="me-1" th:text="${role.getAuthority().replace('ROLE_',' ')}">
-            </span>
+        <span id="nav-roles">
         </span>
     </div>
-    <form th:method="POST" th:action="@{/logout}" class="d-flex">
+    <form method="POST" action="/logout" class="d-flex">
         <button class="btn navbar-text" type="submit">Logout</button>
     </form>
 </header>
@@ -30,11 +28,11 @@
         <!-- Левый сайдбар -->
         <div class="sidebar col-md-3 col-lg-2 p-0 bg-white full-height">
             <ul class="nav flex-column nav-pills mt-3">
-                <li sec:authorize="hasRole('ADMIN')" class="nav-item">
+                <li class="nav-item" id="link-admin">
                     <a class="nav-link" href="/admin">Admin</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/user">User</a>
+                    <a class="nav-link active">User</a>
                 </li>
             </ul>
         </div>
@@ -61,14 +59,14 @@
                         <tbody>
                         <tr>
 
-                            <td class="pt-3" th:text="${authUser.getId()}">ID</td>
-                            <td class="pt-3" th:text="${authUser.getFirstName()}">First name</td>
-                            <td class="pt-3" th:text="${authUser.getLastName()}">Last name</td>
-                            <td class="pt-3" th:text="${authUser.getAge()}">Age</td>
-                            <td class="pt-3" th:text="${authUser.getEmail()}">Email</td>
+                            <td class="pt-3" >ID</td>
+                            <td class="pt-3" >First name</td>
+                            <td class="pt-3" >Last name</td>
+                            <td class="pt-3" >Age</td>
+                            <td class="pt-3" >Email</td>
                             <td class="pt-3">
-                                <span th:each="role : ${authUser.getRoles()}">
-                                    <span th:text="${role.getName().replace('ROLE_','')}">role</span>
+                                <span >
+                                    <span>role</span>
                                 </span>
                             </td>
                         </tr>
@@ -80,6 +78,8 @@
     </div>
 </div>
 
-<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+<script src="/js/user.js"></script>
+
 </body>
 </html>

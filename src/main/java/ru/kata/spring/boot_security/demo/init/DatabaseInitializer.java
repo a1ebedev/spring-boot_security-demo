@@ -8,9 +8,7 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class DatabaseInitializer implements CommandLineRunner {
@@ -27,13 +25,16 @@ public class DatabaseInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        roleService.addRole(new Role("ROLE_ADMIN"));
-        roleService.addRole(new Role("ROLE_USER"));
+        Role adminRole = new Role("ROLE_ADMIN");
+        Role userRole = new Role("ROLE_USER");
+
+        roleService.addRole(adminRole);
+        roleService.addRole(userRole);
 
         userService.addUser(new User("admin", "admin", 31, "admin@mail.ru", "123",
-                new HashSet<>(Arrays.asList(roleService.findByName("ROLE_ADMIN"), roleService.findByName("ROLE_USER")))));
+                Set.of(adminRole, userRole)));
         userService.addUser(new User("user", "user", 25, "user@mail.ru", "123",
-                new HashSet<>(Collections.singleton(roleService.findByName("ROLE_USER")))));
+                Set.of(userRole)));
 
     }
 }
